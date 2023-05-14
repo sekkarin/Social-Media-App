@@ -21,6 +21,8 @@ import App from './App';
 
 const persistConfig = { key: "root", storage, version: 1 };
 const persistedReducer = persistReducer(persistConfig, authReducer);
+
+
 const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
@@ -40,3 +42,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     </Provider>
   </React.StrictMode>,
 )
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch

@@ -29,20 +29,21 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IInitialState, setPosts } from '../../state'
 import axios from 'axios'
-import { ThemeSettings } from '../../theme'
 import { User } from '../../state'
+import { RootState } from '../../main'
 
 type PropsType = {
     picturePath: string
 }
 const MyPostWidget: React.FC<PropsType> = ({ picturePath }) => {
+
     const dispatch = useDispatch()
     const [isImage, setIsImage] = useState(false)
     const [image, setImage] = useState<any | null>(null)
     const [post, setPost] = useState<object[] | string>("")
-    const { palette } = useTheme<ThemeSettings>()
-    const { _id } = useSelector((state: IInitialState) => state.user)
-    const token = useSelector((state: IInitialState) => state.token)
+    const { palette } = useTheme()
+    const { _id } = useSelector((state: RootState) => state.user)
+    const token = useSelector((state: RootState) => state.token)
     const isNonMobileScreens = useMediaQuery("(min-width: 1000px)")
     const mediumMain = palette.neutral.mediumMain
     const medium = palette.neutral.medium

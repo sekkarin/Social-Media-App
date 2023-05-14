@@ -12,25 +12,24 @@ import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { IInitialState, User } from '../../state/index'
+import { User } from '../../state/index'
 import React from 'react'
-import { ThemeSettings } from '../../theme'
-// import twitter from '../../assets/twitter.png'
-type PropsType = {
-    userId:string;
-    picturePath:string
-}
-const UserWidget:React.FC<PropsType> = ({ userId, picturePath }) => {
-    const [user, setUser] = useState<User | null>(null)
-    const { palette } = useTheme<ThemeSettings>()
-    // console.log("useTheme<ThemeSettings>()", palette);
+import { RootState } from '../../main'
 
+interface PropsType {
+    userId?: string;
+    picturePath?: string;
+}
+function UserWidget({ userId, picturePath }: PropsType) {
+    
+    
+    const [user, setUser] = useState<User | null>(null)
+    const { palette } = useTheme()
     const navigate = useNavigate()
-    const token = useSelector((state: IInitialState) => state.token)
+    const token = useSelector((state: RootState) => state.token)
     const dark = palette.neutral.dark
     const medium = palette.neutral.medium
     const main = palette.neutral.main
-    // console.log(token);
 
     const getUser = async () => {
         const res = await axios.get(`http://localhost:3001/user/${userId}`, {
@@ -43,20 +42,18 @@ const UserWidget:React.FC<PropsType> = ({ userId, picturePath }) => {
     useEffect(() => {
         getUser()
     }, [])
-    if (!user) return
+    if (!user)
+        return
 
     const {
         firstName,
         lastName,
         location,
         occupation,
-        viewedProfire,
+        viewedProfile,
         impressions,
-        friends
-    } = user
-
-    // console.log(user.lastName);
-    // console.log(picturePath);
+        friends,
+    } = user;
 
     return (
 
@@ -98,13 +95,13 @@ const UserWidget:React.FC<PropsType> = ({ userId, picturePath }) => {
                     <Typography color={medium}>{location}</Typography>
 
                 </Box>
-                <Box display={"flex"} alignItems={"center"} gap={"1rem"} >
+                <Box display={"flex"} alignItems={"center"} gap={"1rem"}>
                     <WorkOutlineOutlined fontSize='large' sx={{ color: main }} />
                     <Typography color={medium}>{occupation}</Typography>
                 </Box>
             </Box>
             {/* THIRD ROW */}
-            <Box p={"1rem"} >
+            <Box p={"1rem"}>
                 <FlexBetween mb="0.5rem">
                     <Typography color={medium}>Who's viewed your profile</Typography>
                     <Typography color={main} fontWeight={"500"}>{impressions}</Typography>
@@ -125,7 +122,7 @@ const UserWidget:React.FC<PropsType> = ({ userId, picturePath }) => {
                             <Typography color={main} fontWeight={'500'}>
                                 Twitter
                             </Typography>
-                            <Typography color={medium} >Social Network</Typography>
+                            <Typography color={medium}>Social Network</Typography>
                         </Box>
                     </FlexBetween>
                     <EditOutlined sx={{ color: main }} />
@@ -137,7 +134,7 @@ const UserWidget:React.FC<PropsType> = ({ userId, picturePath }) => {
                             <Typography color={main} fontWeight={'500'}>
                                 Linked
                             </Typography>
-                            <Typography color={medium} >Social Platform</Typography>
+                            <Typography color={medium}>Social Platform</Typography>
                         </Box>
                     </FlexBetween>
                     <EditOutlined sx={{ color: main }} />

@@ -12,11 +12,15 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IInitialState, setPosts } from "../../state";
 import React from 'react'
+import axios from "axios";
+import { RootState } from "../../main";
+import Friends from "../../components/Friends";
 
 
-const PostWidget:React.FC = ({
-    postId,
+const PostWidget: React.FC = ({
+    userId,
     postUserId,
+    postId,
     name,
     description,
     location,
@@ -25,10 +29,12 @@ const PostWidget:React.FC = ({
     likes,
     comments,
 }) => {
+    console.log(postId);
+
     const [isComments, setIsComments] = useState(false);
     const dispatch = useDispatch();
-    const token = useSelector((state) => state.token);
-    const loggedInUserId = useSelector((state) => state.user._id);
+    const token = useSelector((state: RootState) => state.token);
+    const loggedInUserId = useSelector((state: RootState) => state.user._id);
     const isLiked = Boolean(likes[loggedInUserId]);
     const likeCount = Object.keys(likes).length;
 
@@ -37,17 +43,19 @@ const PostWidget:React.FC = ({
     const primary = palette.primary.main;
 
     const patchLike = async () => {
-        const res = await axios.get(`http://localhost:3001/posts/${postId}/like`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        })
+        const res = await axios.patch(`http://localhost:3001/posts/${postId}/like`,
+            {userId:userId},
+            {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
         // console.log("res.data",res.data);
-        
-        dispatch(setPosts(res.data));
+
+        dispatch(setPosts({ post: res.data }));
     };
 
     return (
         <WidgetWrapper m="2rem 0">
-            <FriendListWidget
+            <Friends
                 friendId={postUserId}
                 name={name}
                 subTitle={location}
@@ -63,7 +71,7 @@ const PostWidget:React.FC = ({
                     alt="post"
                     style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
                     src={`http://localhost:3001/assets/${picturePath}`}
-                    
+
                 />
             )}
             <FlexBetween mt="0.25rem">

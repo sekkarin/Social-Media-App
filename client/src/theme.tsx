@@ -1,9 +1,107 @@
 import { Theme } from '@mui/material/styles';
 
-// declare module '@mui/material/styles' {
-//   type DefaultTheme = Theme
-// }
-// color design tokens export
+declare module '@mui/material/styles' {
+    interface Theme {
+        palette: {
+            primary: {
+                dark: string;
+                main: string;
+                light: string;
+            };
+            neutral: {
+                dark: string;
+                main: string;
+                mediumMain: string;
+                medium: string;
+                light: string;
+            };
+            background: {
+                default: string;
+                alt: string;
+            };
+            mode: Mode;
+        },
+        typography: {
+            fontFamily: string;
+            fontSize: number;
+            h1: {
+                fontFamily: string;
+                fontSize: number;
+            };
+            h2: {
+                fontFamily: string;
+                fontSize: number;
+            };
+            h3: {
+                fontFamily: string;
+                fontSize: number;
+            };
+            h4: {
+                fontFamily: string;
+                fontSize: number;
+            };
+            h5: {
+                fontFamily: string;
+                fontSize: number;
+            };
+            h6: {
+                fontFamily: string;
+                fontSize: number;
+            };
+        }
+
+    }
+    // allow configuration using `createTheme`
+    interface ThemeOptions {
+        primary?: {
+            palette?: {
+                dark?: string;
+                main?: string;
+                light?: string;
+            };
+            neutral?: {
+                dark?: string;
+                main?: string;
+                mediumMain?: string;
+                medium?: string;
+                light?: string;
+            };
+            background?: {
+                default?: string;
+                alt?: string;
+            };
+            mode?: Mode;
+        };
+        TypographyOptions?: {
+            fontFamily?: string;
+            fontSize?: number;
+            h1?: {
+                fontFamily: string;
+                fontSize: number;
+            };
+            h2: {
+                fontFamily: string;
+                fontSize: number;
+            };
+            h3: {
+                fontFamily: string;
+                fontSize: number;
+            };
+            h4: {
+                fontFamily: string;
+                fontSize: number;
+            };
+            h5: {
+                fontFamily: string;
+                fontSize: number;
+            };
+            h6: {
+                fontFamily: string;
+                fontSize: number;
+            };
+        }
+    }
+}
 export const colorTokens = {
     grey: {
         0: "#FFFFFF",
@@ -88,7 +186,7 @@ export interface ThemeSettings {
 }
 
 
-export const themeSettings:ThemeSettings = (mode: Mode) => {
+export const themeSettings = (mode: Mode) => {
     return {
         palette: {
             mode: mode,

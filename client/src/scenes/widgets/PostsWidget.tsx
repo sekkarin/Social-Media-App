@@ -5,6 +5,7 @@ import { setPosts } from '../../state'
 import MyPostWidget from './MyPostWidget'
 import axios from 'axios'
 import PostWidget from './PostWidget'
+import { RootState } from '../../main'
 
 interface PropsType {
     userId: any
@@ -13,8 +14,9 @@ interface PropsType {
 
 const PostsWidget: React.FC<PropsType> = ({ userId, isProfile = false }) => {
     const dispatch = useDispatch()
-    const posts = useSelector((state) => state.posts)
-    const token = useSelector((state) => state.token)
+    const posts = useSelector((state: RootState) => state.posts)
+    const token = useSelector((state: RootState) => state.token)
+    console.log(posts);
     const getPost = async () => {
         const res = await axios.get('http://localhost:3001/posts',
             {
@@ -24,8 +26,8 @@ const PostsWidget: React.FC<PropsType> = ({ userId, isProfile = false }) => {
 
             },
         )
-        // console.log("res.data.post",res.data.post);
-        
+        // console.log("res.data.post", res.data.post);
+
         dispatch(setPosts(res.data.post))
     }
     const getUsertPost = async () => {
@@ -37,7 +39,7 @@ const PostsWidget: React.FC<PropsType> = ({ userId, isProfile = false }) => {
 
             },
         )
-        dispatch(setPosts(res.data))
+        dispatch(setPosts(res.data.post))
     }
     useEffect(() => {
         if (isProfile) {
@@ -46,6 +48,7 @@ const PostsWidget: React.FC<PropsType> = ({ userId, isProfile = false }) => {
             getPost()
         }
     }, [])
+
     
 
     return (
@@ -67,6 +70,7 @@ const PostsWidget: React.FC<PropsType> = ({ userId, isProfile = false }) => {
                         key={_id}
                         postId={_id}
                         postUserId={userId}
+                        
                         name={`${firstName} ${lastName}`}
                         description={description}
                         location={location}
@@ -75,6 +79,7 @@ const PostsWidget: React.FC<PropsType> = ({ userId, isProfile = false }) => {
                         likes={likes}
                         comments={comments}
                     />
+
                 )
             )}
         </>

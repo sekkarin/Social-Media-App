@@ -1,4 +1,3 @@
-import { PaletteMode } from '@mui/material';
 import { createSlice } from '@reduxjs/toolkit'
 
 export interface User {
@@ -21,11 +20,12 @@ export interface User {
 interface ObjectId {
     [key: string]: any;
 }
+
 type Post = {
     _id: string,
     postId: string,
     friends?: [],
-    // posts?: [],
+    posts?: [],
     postUserId: string,
     name: string,
     description: string,
@@ -40,7 +40,7 @@ export interface IInitialState {
     mode: string
     user: User | null,
     token: null | string,
-    posts: any[] 
+    posts: Post[]
 }
 
 export const initialState: IInitialState = {
@@ -66,24 +66,27 @@ export const authSlice = createSlice({
             state.token = null
         },
         setFriends: (state, action) => {
+            // console.log("state",action.payload.friends,action.payload);
+
             if (state.user) {
-                if (!state.user.friends) {
-                    return
-                }
                 state.user.friends = action.payload.friends;
-
             } else {
-                console.log("user friends non-existing");
-
+                console.error("user friends non-existent :(");
             }
+
         },
         setPosts: (state, action) => {
+            // console.log("setPosts from action",action.payload);
+
+            state.posts = action.payload;
+        },
+        setPost: (state, action) => {
             const updatedPost = state.posts.map((post) => {
                 if (post._id === action.payload.post._id) return action.payload;
                 return post
             })
             state.posts = updatedPost
-            console.log("state.posts", state.posts);
+            // console.log("state.posts", state.posts);
 
         }
 
@@ -94,7 +97,8 @@ export const {
     setLogin,
     setLogout,
     setFriends,
-    setPosts
+    setPosts,
+    setPost
 } = authSlice.actions
 
 export default authSlice.reducer

@@ -11,7 +11,10 @@ export const verifyToken = (req: CustomRequest,res: Response,next: NextFunction)
     
     try {
         let token = req.header("Authorization");
+
         if (!token) return res.sendStatus(403)
+        
+        
         if(token.startsWith("Bearer ")){
             token = token.slice(7, token.length).trimLeft();
         }

@@ -48,6 +48,8 @@ export const likepost = async (req: Request, res: Response) => {
             { new: true })
         res.status(200).send(updatePost)
     } catch (error) {
+        console.log(error);
+        
         res.sendStatus(500)
     }
 }
@@ -69,7 +71,8 @@ export const createPost = async (req: Request, res: Response) => {
             lastName: user.lastName,
             location: user.location,
             description,
-            userPicturePath: picturePath,
+            picturePath: picturePath,
+            userPicturePath: user.picturePath,
             likes: {},
             comments: []
         })

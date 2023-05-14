@@ -46,39 +46,42 @@ export const getUserFriends = async (req: Request, res: Response) => {
     }
 }
 export const addRemoveFriend = async (req: Request, res: Response) => {
+    console.log("addRemoveFriend start");
     try {
-        const { id,friendId } = req.params
-        const user = await User.findById(id)
-        const friend = await User.findById(friendId)
 
-        if(!user || !friend) return res.sendStatus(400)
+        const { id, friendId } = req.params;
+        console.log(id, friendId);
 
-        if(user?.friends.includes(friend)){
-            user.friends = user.friends.filter((id) => id !== friendId)
-            friend.friends = friend.friends.filter((id) => id !== id)
-        }else{
-            user.friends.push(friendId)
-            friend.friends.push(id)
+        const user = await User.findById(id);
+        const friend = await User.findById(friendId);
+        if (!user || !friend) return res.sendStatus(400)
+        console.log("addRemoveFriend step 2");
+
+        if (user.friends.includes(friendId)) {
+            user.friends = user.friends.filter((id) => id !== friendId);
+            friend.friends = friend.friends.filter((id) => id !== id);
+        } else {
+            user.friends.push(friendId);
+            friend.friends.push(id);
         }
-        await user.save()
-        await friend.save()
+        await user.save();
+        await friend.save();
+
         const friends = await Promise.all(
             user.friends.map((id) => User.findById(id))
-        )
+        );
         const formattedFriends = friends.map((friend) => {
-            return {
-                "_id": friend?._id,
-                "lastname": friend?.lastName,
-                "firstName": friend?.firstName,
-                "occupation": friend?.occupation,
-                "picturePath": friend?.picturePath,
-                "location": friend?.location
-            }
-        })
-        res.status(200).json(formattedFriends)
+            // console.log(friend);
+            return friend
+        });
+
+        res.status(200).json(formattedFriends);
+
 
     } catch (error) {
-        log(error)
+
+        console.log(error);
+
         res.sendStatus(500)
     }
 }
