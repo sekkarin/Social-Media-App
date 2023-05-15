@@ -10,17 +10,27 @@ import FriendListWidget from "./FriendListWidget";
 import WidgetWrapper from "../../components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { IInitialState, setPosts } from "../../state";
+import { IInitialState, setPost, setPosts } from "../../state";
 import React from 'react'
 import axios from "axios";
 import { RootState } from "../../main";
 import Friends from "../../components/Friends";
 
+interface IPostWidget {
+    postId: string;
+    postUserId: string;
+    name: string;
+    description: string;
+    location: string;
+    picturePath: string;
+    userPicturePath: string;
+    likes: string;
+    comments: string;
+}
 
-const PostWidget: React.FC = ({
-    userId,
-    postUserId,
+const PostWidget: React.FC<IPostWidget> = ({
     postId,
+    postUserId,
     name,
     description,
     location,
@@ -29,28 +39,25 @@ const PostWidget: React.FC = ({
     likes,
     comments,
 }) => {
-    console.log(postId);
 
     const [isComments, setIsComments] = useState(false);
     const dispatch = useDispatch();
     const token = useSelector((state: RootState) => state.token);
-    const loggedInUserId = useSelector((state: RootState) => state.user._id);
+    const loggedInUserId = useSelector((state: RootState) => state.user?._id);
     const isLiked = Boolean(likes[loggedInUserId]);
     const likeCount = Object.keys(likes).length;
-
     const { palette } = useTheme();
     const main = palette.neutral.main;
     const primary = palette.primary.main;
+    // console.log("userId", userId);
 
     const patchLike = async () => {
         const res = await axios.patch(`http://localhost:3001/posts/${postId}/like`,
-            {userId:userId},
+            { userId: loggedInUserId },
             {
                 headers: { 'Authorization': `Bearer ${token}` }
             })
-        // console.log("res.data",res.data);
-
-        dispatch(setPosts({ post: res.data }));
+        dispatch(setPost({ post: res.data }));
     };
 
     return (

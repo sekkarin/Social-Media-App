@@ -8,14 +8,14 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { Mode, themeSettings } from "./theme";
 import React from "react";
-import { IInitialState } from "./state";
+import { RootState } from "./main";
 
 
 function App() {
-  const mode = useSelector((state: IInitialState) => state.mode);
+  const mode = useSelector((state: RootState) => state.mode);
   // const theme = useMemo(() => createTheme(themeSettings(mode as Mode)), [mode]);
   const theme = useMemo(() => createTheme(themeSettings(mode as Mode)), [mode]);
-  const isAuth = Boolean(useSelector((state) => state.token));
+  const isAuth = Boolean(useSelector((state:RootState) => state.token));
 
   return (
     <div className="app">

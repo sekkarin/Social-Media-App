@@ -20,6 +20,8 @@ export const getUserPost = async (req: Request, res: Response) => {
     try {
         const { userId } = req.params
         const post = await Post.find({ userId })
+        console.log("getUserPost",post);
+        
         res.status(200).json(post)
 
 
@@ -31,8 +33,12 @@ export const likepost = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const { userId } = req.body
-        const post = await Post.findById(id)
+        const post = await Post.findById(id)        
+        // console.log("is",id,"req.body",req.body);
+                                
         const isLiked = post?.likes?.get(userId)
+        console.log("isLiked",isLiked);
+        
         if (!post) {
             return res.sendStatus(403)
         }

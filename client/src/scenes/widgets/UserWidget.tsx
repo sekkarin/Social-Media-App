@@ -15,14 +15,15 @@ import axios from 'axios'
 import { User } from '../../state/index'
 import React from 'react'
 import { RootState } from '../../main'
-
+import twitter from '../../assets/twitter.png'
+import linkedin from '../../assets/linkedin.png'
 interface PropsType {
     userId?: string;
     picturePath?: string;
 }
 function UserWidget({ userId, picturePath }: PropsType) {
-    
-    
+
+
     const [user, setUser] = useState<User | null>(null)
     const { palette } = useTheme()
     const navigate = useNavigate()
@@ -84,7 +85,7 @@ function UserWidget({ userId, picturePath }: PropsType) {
 
                     </Box>
 
-                </FlexBetween>
+                </FlexBetween>``
                 <ManageAccountsOutlined />
             </FlexBetween>
             <Divider />
@@ -117,7 +118,7 @@ function UserWidget({ userId, picturePath }: PropsType) {
                 </Typography>
                 <FlexBetween gap={'1rem'} mb={'0.5rem'}>
                     <FlexBetween gap={'1rem'}>
-                        <img src='src/assets/twitter.png' alt='twiter' />
+                        <img src={twitter} alt='twiter' />
                         <Box>
                             <Typography color={main} fontWeight={'500'}>
                                 Twitter
@@ -129,7 +130,7 @@ function UserWidget({ userId, picturePath }: PropsType) {
                 </FlexBetween>
                 <FlexBetween gap={'1rem'}>
                     <FlexBetween gap={'1rem'}>
-                        <img src='src/assets/linkedin.png' alt='linked' />
+                        <img src={linkedin} alt='linked' />
                         <Box>
                             <Typography color={main} fontWeight={'500'}>
                                 Linked

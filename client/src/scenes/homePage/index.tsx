@@ -8,6 +8,7 @@ import { User } from '../../state'
 import FriendListWidget from '../widgets/FriendListWidget'
 import PostsWidget from '../widgets/PostsWidget'
 import { RootState } from '../../main'
+import AdvertWidget from '../widgets/AdvertWidget'
 // import 
 function HomePage() {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)")
@@ -31,13 +32,13 @@ function HomePage() {
           <MyPostWidget picturePath={picturePath} />
           <PostsWidget userId={_id} isProfile={false} />
         </Box>
-        {isNonMobileScreens && <Box flexBasis={'26%'}>
-          {/* <AdvertWidget /> */}
-          <Box m="2rem 0" />
+        {isNonMobileScreens && (<Box flexBasis={'26%'}>
+          <AdvertWidget />
+          <Box m={'2rem 0'} />
           <FriendListWidget userId={_id} />
-        </Box>}
+        </Box>)}
       </Box>
-    </Box>
+    </Box >
   )
 }
 

@@ -16,7 +16,7 @@ const PostsWidget: React.FC<PropsType> = ({ userId, isProfile = false }) => {
     const dispatch = useDispatch()
     const posts = useSelector((state: RootState) => state.posts)
     const token = useSelector((state: RootState) => state.token)
-    console.log(posts);
+    // console.log(posts);
     const getPost = async () => {
         const res = await axios.get('http://localhost:3001/posts',
             {
@@ -26,11 +26,11 @@ const PostsWidget: React.FC<PropsType> = ({ userId, isProfile = false }) => {
 
             },
         )
-        // console.log("res.data.post", res.data.post);
-
         dispatch(setPosts(res.data.post))
     }
     const getUsertPost = async () => {
+        // console.log('userId',userId);
+        
         const res = await axios.get(`http://localhost:3001/posts/${userId}/posts`,
             {
                 headers: {
@@ -39,7 +39,7 @@ const PostsWidget: React.FC<PropsType> = ({ userId, isProfile = false }) => {
 
             },
         )
-        dispatch(setPosts(res.data.post))
+        dispatch(setPosts(res.data))
     }
     useEffect(() => {
         if (isProfile) {
@@ -47,9 +47,10 @@ const PostsWidget: React.FC<PropsType> = ({ userId, isProfile = false }) => {
         } else {
             getPost()
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    
+
 
     return (
         <>
@@ -70,7 +71,6 @@ const PostsWidget: React.FC<PropsType> = ({ userId, isProfile = false }) => {
                         key={_id}
                         postId={_id}
                         postUserId={userId}
-                        
                         name={`${firstName} ${lastName}`}
                         description={description}
                         location={location}
