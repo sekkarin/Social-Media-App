@@ -2,9 +2,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import User from '../models/User.Model'
 import express, { Request, Response } from 'express'
-import { log } from 'console'
 import Post from '../models/Post.Model'
-
 
 export const getFeedPosts = async (req: Request, res: Response) => {
     try {
@@ -14,14 +12,10 @@ export const getFeedPosts = async (req: Request, res: Response) => {
         res.sendStatus(404)
     }
 }
-
-
 export const getUserPost = async (req: Request, res: Response) => {
     try {
         const { userId } = req.params
-        const post = await Post.find({ userId })
-        console.log("getUserPost",post);
-        
+        const post = await Post.find({ userId })        
         res.status(200).json(post)
 
 
@@ -86,7 +80,6 @@ export const createPost = async (req: Request, res: Response) => {
         const post = await Post.find();
         res.status(200).json({ post: post })
     } catch (error) {
-        // console.log("create post error");
         console.log(error);
         res.sendStatus(409)
     }
